@@ -22,8 +22,12 @@ RUN npx prisma generate
 # Build TypeScript
 RUN npm run build
 
+# Make start script executable
+COPY start.sh .
+RUN chmod +x start.sh
+
 # Expose port
 EXPOSE 4000
 
 # Default command
-CMD ["npm", "start"]
+CMD ["./start.sh"]
