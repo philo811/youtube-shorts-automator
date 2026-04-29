@@ -1,0 +1,55 @@
+services:
+  - type: web
+    name: youtube-shorts-api
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    region: ohio
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: shorts-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: shorts-redis
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+
+  - type: worker
+    name: youtube-shorts-download-worker
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    dockerCommand: npm run worker:download
+    plan: free
+    region: ohio
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: shorts-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: shorts-redis
+          property: connectionString
+
+  - type: redis
+    name: shorts-redis
+    ipAllowList: []
+    plan: free
+    region: ohio
+
+databases:
+  - name: shorts-db
+    databaseName: youtubeshorts
+    user: myuser
+    plan: free
+    region: ohio
