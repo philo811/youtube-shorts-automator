@@ -2,7 +2,7 @@ FROM node:18-bullseye-slim
 
 # Install FFmpeg and Python3 (for yt-dlp)
 RUN apt-get update && \
-    apt-get install -y ffmpeg python3 python3-pip curl && \
+    apt-get install -y ffmpeg python3 python3-pip python-is-python3 curl && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
