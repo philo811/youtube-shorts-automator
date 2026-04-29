@@ -24,6 +24,14 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Welcome to YouTube Shorts Automator API', 
+    status: 'running',
+    docs: 'Endpoints are under /api/' 
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
