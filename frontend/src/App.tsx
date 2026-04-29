@@ -9,9 +9,11 @@ function App() {
     { id: 2, title: 'Tech Review 2024', status: 'DONE' },
   ]);
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
   const handleConnect = () => {
     // Redirect to backend OAuth flow
-    window.location.href = 'http://localhost:4000/api/youtube/auth-url';
+    window.location.href = `${API_URL}/api/youtube/auth-url`;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
