@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  passwordHash    String
+  createdAt       DateTime         @default(now())
+  youtubeAccounts YouTubeAccount[]
+  videos          Video[]
+}
+
+model YouTubeAccount {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  channelId    String
+  accessToken  String
+  refreshToken String
+  tokenExpiry  DateTime
+}
+
+model Video {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  sourceUrl  String
+  s3Key      String?
+  status     String   @default("PENDING") // PENDING, PROCESSING, DONE, FAILED
+  createdAt  DateTime @default(now())
+  clips      Clip[]
+}
+
+model Clip {
+  id          String   @id @default(uuid())
+  videoId     String
+  video       Video    @relation(fields: [videoId], references: [id])
+  startTime   Float
+  endTime     Float
+  s3Key       String?
+  title       String?
+  description String?
+  status      String   @default("PENDING") // PENDING, UPLOADING, UPLOADED, FAILED
+  youtubeUrl  String?
+}
