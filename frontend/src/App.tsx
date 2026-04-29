@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Youtube, Upload, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { Youtube, Upload, Clock, CheckCircle } from 'lucide-react';
 
 function App() {
   const [url, setUrl] = useState('');
-  const [connected, setConnected] = useState(false);
+  const [connected] = useState(false);
   const [videos, setVideos] = useState([
     { id: 1, title: 'Podcast Episode 42', status: 'PROCESSING' },
     { id: 2, title: 'Tech Review 2024', status: 'DONE' },
