@@ -26,13 +26,13 @@ const authMiddleware = (req: any, res: any, next: any) => {
   }
 };
 
-router.get('/auth-url', authMiddleware, (req: any, res) => {
+router.get('/auth-url', (req: any, res) => {
   const url = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: ['https://www.googleapis.com/auth/youtube.upload', 'https://www.googleapis.com/auth/youtube.readonly'],
-    state: req.userId // pass userId to link the account later
+    state: 'dummy_user_123' // Dummy user for testing
   });
-  res.json({ url });
+  res.redirect(url); // Redirect directly instead of returning JSON
 });
 
 router.get('/callback', async (req, res) => {
@@ -51,9 +51,16 @@ router.get('/callback', async (req, res) => {
       return res.status(400).json({ error: 'Could not find YouTube channel' });
     }
 
+    // Ensure dummy user exists for MVP testing
+    await prisma.user.upsert({
+      where: { id: userId },
+      update: {},
+      create: { id: userId, email: 'test@example.com', passwordHash: 'dummy' }
+    });
+
     // Save or update account in DB
     await prisma.youTubeAccount.upsert({
-      where: { id: channelId }, // In a real app we might need a composite key or checking by userId + channelId
+      where: { id: channelId },
       update: {
         accessToken: tokens.access_token!,
         refreshToken: tokens.refresh_token!,
