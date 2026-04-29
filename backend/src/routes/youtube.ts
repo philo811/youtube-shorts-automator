@@ -8,9 +8,9 @@ const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
 const oauth2Client = new google.auth.OAuth2(
-  process.env.YOUTUBE_CLIENT_ID,
-  process.env.YOUTUBE_CLIENT_SECRET,
-  process.env.YOUTUBE_REDIRECT_URI
+  process.env.YOUTUBE_CLIENT_ID as string,
+  process.env.YOUTUBE_CLIENT_SECRET as string,
+  process.env.YOUTUBE_REDIRECT_URI as string
 );
 
 // Middleware to extract user ID from token
