@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
 const oauth2Client = new google.auth.OAuth2(
-  process.env.YOUTUBE_CLIENT_ID as string,
+  process.env.YOUTUBE_CLIENT_ID || '897411644787-ec1taqm1advjmsj1mg6a1iuunu1s8r6r.apps.googleusercontent.com',
   process.env.YOUTUBE_CLIENT_SECRET as string,
   process.env.YOUTUBE_REDIRECT_URI as string
 );
